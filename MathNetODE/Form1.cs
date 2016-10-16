@@ -21,11 +21,6 @@ namespace MathNetODE
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void Form1_Load(object sender, EventArgs e)
         {
             result = new Result(MathNet.Numerics.OdeSolvers.RungeKutta.FourthOrder(
@@ -37,10 +32,10 @@ namespace MathNetODE
                     -x[1] + x[0] * x[1]
                 })));
 
-            chart1.ChartAreas[0].AxisX.Maximum = result.MaxX;
-            chart1.ChartAreas[0].AxisX.Minimum = 0;
-            chart1.ChartAreas[0].AxisY.Maximum = result.MaxY;
-            chart1.ChartAreas[0].AxisY.Minimum = 0;
+            MainChart.ChartAreas[0].AxisX.Maximum = result.MaxX;
+            MainChart.ChartAreas[0].AxisX.Minimum = 0;
+            MainChart.ChartAreas[0].AxisY.Maximum = result.MaxY;
+            MainChart.ChartAreas[0].AxisY.Minimum = 0;
 
             t = -1;
             timer1.Enabled = true;
@@ -50,12 +45,11 @@ namespace MathNetODE
         private void timer1_Tick(object sender, EventArgs e)
         {
             t++;
-            //chart1.Series[0].Points.Clear();
             if (t == result.T.Length - 1)
             {
                 timer1.Enabled = false;
             }
-            chart1.Series[0].Points.AddXY(result.X[t], result.Y[t]);
+            MainChart.Series[0].Points.AddXY(result.X[t], result.Y[t]);
         }
     }
 }

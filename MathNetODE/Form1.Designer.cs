@@ -55,6 +55,8 @@
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button4 = new System.Windows.Forms.Button();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.buttonLoad = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
@@ -63,8 +65,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.button4 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MainChart)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -154,11 +154,7 @@
             this.MainChart.Series.Add(series3);
             this.MainChart.Size = new System.Drawing.Size(952, 622);
             this.MainChart.TabIndex = 0;
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 1;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.MainChart.MouseClick += new System.Windows.Forms.MouseEventHandler(this.MainChart_MouseClick);
             // 
             // label1
             // 
@@ -338,6 +334,26 @@
             this.panel1.Size = new System.Drawing.Size(102, 599);
             this.panel1.TabIndex = 19;
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(7, 266);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(84, 35);
+            this.button4.TabIndex = 25;
+            this.button4.Text = "Удалить \r\nпоследний";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(3, 500);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(69, 30);
+            this.checkBox2.TabIndex = 24;
+            this.checkBox2.Text = "Особые \r\nлинии?";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
             // buttonLoad
             // 
             this.buttonLoad.Location = new System.Drawing.Point(8, 576);
@@ -404,26 +420,6 @@
             // 
             this.openFileDialog.Filter = "JSON (*.json*)|*.json*";
             // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(3, 500);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(69, 30);
-            this.checkBox2.TabIndex = 24;
-            this.checkBox2.Text = "Особые \r\nлинии?";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(7, 266);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(84, 35);
-            this.button4.TabIndex = 25;
-            this.button4.Text = "Удалить \r\nпоследний";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -435,7 +431,6 @@
             this.MinimizeBox = false;
             this.Name = "Form1";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.MainChart)).EndInit();
             this.panel1.ResumeLayout(false);

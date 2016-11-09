@@ -14,27 +14,14 @@ namespace MathNetODE
 {
     public partial class Form1 : Form
     {
-        Result result;
         int t = -1;
 
         public Form1()
         {
             InitializeComponent();
             MainChart.Series.Clear();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            t++;
-            if (t == result.T.Length - 1)
-            {
-                timer1.Enabled = false;
-            }
-            MainChart.Series[0].Points.AddXY(result.X[t], result.Y[t]);
+            MainChart.ChartAreas[0].AxisX.Minimum = 0;
+            MainChart.ChartAreas[0].AxisY.Minimum = 0;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -176,6 +163,102 @@ namespace MathNetODE
         private void button4_Click(object sender, EventArgs e)
         {
             MainChart.Series.Remove(MainChart.Series.Last());
+        }
+
+        private void MainChart_MouseClick(object sender, MouseEventArgs e)
+        {
+            if(MainChart.Series.Count() != 0)
+            { 
+            double a1 = Convert.ToDouble(textBox3.Text.Replace(".", ","));
+            double b1 = Convert.ToDouble(textBox4.Text.Replace(".", ","));
+            double c1 = Convert.ToDouble(textBox5.Text.Replace(".", ","));
+            double a2 = Convert.ToDouble(textBox6.Text.Replace(".", ","));
+            double b2 = Convert.ToDouble(textBox7.Text.Replace(".", ","));
+            double c2 = Convert.ToDouble(textBox8.Text.Replace(".", ","));
+            double tEnd = Convert.ToDouble(textBox9.Text.Replace(".", ","));
+            MainChart.ChartAreas[0].AxisX.Minimum = 0;
+            MainChart.ChartAreas[0].AxisY.Minimum = 0;
+            double x0 = ((double)e.X - 170)/(1739-170)*MainChart.ChartAreas[0].AxisX.Maximum;
+            double y0 = (896 - (double)e.Y)/(896-49)*MainChart.ChartAreas[0].AxisY.Maximum;
+
+                if (checkBox1.Checked)
+                {
+                    Series newSeries1 = new Series();
+                    newSeries1.ChartType = SeriesChartType.Line;
+                    Series newSeries2 = new Series();
+                    newSeries2.ChartType = SeriesChartType.Line;
+                    Result currentGraph = new Result(MathNet.Numerics.OdeSolvers.RungeKutta.FourthOrder(
+                        Vector<double>.Build.Dense(new double[] { x0, y0 }),
+                        0, tEnd, 3000,
+                        (t, x) => Vector<double>.Build.Dense(new double[]
+                        {
+                    x[0] * (a1 - b1*x[0] - c2*x[1]),
+                    x[1] * (a2 - b2*x[1] - c1*x[0])
+                        })));
+                    for (int i = 0; i < currentGraph.T.Length; i++)
+                    {
+                        newSeries1.Points.AddXY((double)i / (currentGraph.T.Length) * tEnd, currentGraph.X[i]);
+                        newSeries2.Points.AddXY((double)i / (currentGraph.T.Length) * tEnd, currentGraph.Y[i]);
+                    }
+                    MainChart.Series.Add(newSeries1);
+                    MainChart.Series.Add(newSeries2);
+                }
+                else
+                {
+                    if (checkBox2.Checked)
+                    {
+                        Series series2;
+                        Series series3;
+                        try
+                        {
+                            series2 = MainChart.Series["SeriesLine1"];
+                            series3 = MainChart.Series["SeriesLine2"];
+                        }
+                        catch
+                        {
+                            series2 = new Series();
+                            series3 = new Series();
+                            series2.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.DashDotDot;
+                            series2.BorderWidth = 2;
+                            series2.ChartArea = "Default";
+                            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+                            series2.Color = System.Drawing.Color.Gray;
+                            series2.Legend = "Default";
+                            series2.Name = "SeriesLine1";
+                            series3.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.DashDotDot;
+                            series3.BorderWidth = 2;
+                            series3.ChartArea = "Default";
+                            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+                            series3.Color = System.Drawing.Color.Gray;
+                            series3.Legend = "Default";
+                            series3.Name = "SeriesLine2";
+                            this.MainChart.Series.Add(series2);
+                            this.MainChart.Series.Add(series3);
+                        }
+                        series2.Points.Clear();
+                        series3.Points.Clear();
+                        series2.Points.AddXY(0, a1 / c2);
+                        series2.Points.AddXY(a1 / b1, 0);
+                        series3.Points.AddXY(0, a2 / b2);
+                        series3.Points.AddXY(a2 / c1, 0);
+                    }
+                    System.Windows.Forms.DataVisualization.Charting.Series newSeries = new System.Windows.Forms.DataVisualization.Charting.Series();
+                    newSeries.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+                    Result currentGraph = new Result(MathNet.Numerics.OdeSolvers.RungeKutta.FourthOrder(
+                        Vector<double>.Build.Dense(new double[] { x0, y0 }),
+                        0, tEnd, 3000,
+                        (t, x) => Vector<double>.Build.Dense(new double[]
+                        {
+                    x[0] * (a1 - b1*x[0] - c2*x[1]),
+                    x[1] * (a2 - b2*x[1] - c1*x[0])
+                        })));
+                    for (int i = 0; i < currentGraph.T.Length; i++)
+                    {
+                        newSeries.Points.AddXY(currentGraph.X[i], currentGraph.Y[i]);
+                    }
+                    MainChart.Series.Add(newSeries);
+                }
+            }
         }
     }
 }
